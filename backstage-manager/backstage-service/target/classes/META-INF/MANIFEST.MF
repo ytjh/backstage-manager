@@ -1,0 +1,11 @@
+Manifest-Version: 1.0
+Implementation-Title: backstage-service
+Implementation-Version: 0.0.1-SNAPSHOT
+Built-By: Administrator
+Implementation-Vendor-Id: cn.vo
+Build-Jdk: 1.8.0_31
+Implementation-URL: http://projects.spring.io/spring-boot/product-pare
+ nt/backstage-manager/backstage-service/
+Created-By: Maven Integration for Eclipse
+Implementation-Vendor: Pivotal Software, Inc.
+

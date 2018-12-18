@@ -1,0 +1,15 @@
+server:
+   port: 8080
+spring:
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/test?characterEncoding=utf-8
+    username: root
+    password: 123456
+  thymeleaf:
+    prefix: classpath:/templates/
+    cache: false  # 此处为不缓存页面
+ 
+mybatis:
+  mapper-locations: classpath:cn/vo/mapping/*.xml
+  type-aliases-package: cn.vo.pojo
