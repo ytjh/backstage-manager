@@ -1,6 +1,7 @@
 package cn.vo.controller;
 
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -77,6 +78,7 @@ public class UserController {
 	@PostMapping("/insert")
 	public String insert(@ModelAttribute User user){
 		try {
+			user.setCreateTime(new Date());
 			iUserService.insertUser(user);
 		} catch (Exception e) {
 			e.printStackTrace();
