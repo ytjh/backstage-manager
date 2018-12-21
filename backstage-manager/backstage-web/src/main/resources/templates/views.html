@@ -54,10 +54,10 @@
               <cite><span th:text="${session.userName}"></span></cite>
             </a>
             <dl class="layui-nav-child">
-              <dd><a th:href="@{/user/info}">基本资料</a></dd>
+              <a lay-href="/users/info">基本资料</a>
               <dd><a lay-href="views/component/anim/password.html">修改密码</a></dd>
             
-              <dd layadmin-event="logout" style="text-align: center;"><a th:href="@{logout}">退出</a></dd>
+              <dd layadmin-event="logout" style="text-align: center;"><a th:href="@{/logout}">退出</a></dd>
             </dl>
           </li>
           
@@ -66,7 +66,9 @@
           </li>
           
         </ul>
+       
       </div>
+      
       
       <!-- 侧边菜单 -->
       <div class="layui-side layui-side-menu">
@@ -292,7 +294,7 @@
               </a>
               <dl class="layui-nav-child">
                 <dd>
-                  <a lay-href="views/component/anim/message.html">消息中心</a>
+                  <a lay-href="/message/message" >消息中心</a>
                 </dd>
               </dl>
             </li>
@@ -315,7 +317,7 @@
               </a>
               <dl class="layui-nav-child">
                 <dd>
-                  <a href="javascript:;" onclick="layer.tips('即将开放', this);">用户管理</a>
+                  <a lay-href="users/list" >用户管理</a>
                 </dd>
                 <dd>
                   <a href="javascript:;" onclick="layer.tips('即将开放', this);">角色管理</a>
@@ -392,7 +394,7 @@
   </div>
 
   <script th:src="@{/layuiadmin/layui/layui.js}" ></script>
-  <script>
+   <script>
   layui.config({
     base: 'layuiadmin/' //静态资源所在路径
   }).extend({

@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html  xmlns:th="http://www.thymeleaf.org" >
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"/>
+  <title>layui在线调试</title>
+   <link rel="stylesheet"  th:href="@{/layuiadmin/layui/css/layui.css}" media="all"/>
+  <link rel="stylesheet"  th:href="@{/layuiadmin/style/admin.css}" media="all"/>
+  <style>
+    body{margin: 10px;}
+    .demo-carousel{height: 200px; line-height: 200px; text-align: center;}
+  </style>
+</head>
+<body>
+ <div class="layui-btn-group" style="margin-bottom: 15px;">
+                      
+                            <i class="layui-icon"> <a class="layui-btn layui-btn-sm layui-btn-primary" lay-href="/users/add" th:href="@{/users/add}"> 新增</a></i>
+                       
+                    </div>
+  <div class="demoTable">
+            用户名：
+            <div class="layui-inline">
+                <input class="layui-input" id="demoReload" autocomplete="off"/>
+            </div>
+            <button class="layui-btn" data-type="reload">搜索</button>
+        </div>
+<table id="demo" lay-filter="test"></table>
+ <script type="text/html" id="barDemo">
+  <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail"  >查看</a>
+  <a class="layui-btn layui-btn-xs" lay-event="edit" >编辑</a>
+  <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del" >删除</a>
+</script>
+ <script th:src="@{/layuiadmin/layui/layui.js}" ></script>
+<script>
+function cs(){
+	alert(11);
+}
+layui.use('table', function(){
+  var table = layui.table;
+  
+  //第一个实例
+  table.render({
+    elem: '#demo'
+    ,height: 800
+    ,url: '/users/listJson' //数据接口
+    ,page: true //开启分页
+    ,cols: [[ //表头
+      {field: 'id', title: 'ID', width:80, sort: true, fixed: 'left'}
+      ,{field: 'username', title: '用户名', width:80}
+      ,{field: 'loginName', title: '登录名', width:80}
+      ,{field: 'phone', title: '电话', width:80}
+      ,{field: 'email', title: '邮箱', width:120}
+      ,{fixed: 'right', width: 165, align:'center', toolbar: '#barDemo'}
+    ]]
+  });
+  table.on('tool(test)', function(obj){ //注：tool 是工具条事件名，test 是 table 原始容器的属性 lay-filter="对应的值"
+	    var data = obj.data //获得当前行数据
+	    ,layEvent = obj.event; //获得 lay-event 对应的值
+	    if(layEvent === 'detail'){
+	      console.log(data.id);
+	      window.location.href="/users/deial?id="+data.id;
+	    } else if(layEvent === 'del'){
+	      layer.confirm('真的删除行么', function(index){
+	    	  $.ajax({
+                      type: "get",
+                    url: "/users/del",
+                     data: "id="+data.id,
+                     dataType: "text",
+                      success: function (data) {
+                    	  layer.msg('删除成功');
+                      },
+                       error: function () {
+                    	   layer.msg('删除失败');
+                      }
+  
+                 })
+                 layer.close(index);
+	    	  location.reload();
+	      });
+	    } else if(layEvent === 'edit'){
+	 /*      layer.msg('编辑操作'); */
+	    	 window.location.href="/users/edit?id="+data.id;
+	    }
+	  });
+  var $ = layui.$, active =
+  {
+      reload: function () {
+          var demoReload = $('#demoReload').val();//获取输入框的值
+          //执行重载
+          table.reload('demo',
+              {
+                  page:
+                      {
+                          curr: 1 //重新从第 1 页开始
+                      }
+            , where: { username: demoReload}//这里传参  向后台
+            , url: '/users/listJson'//后台做模糊搜索接口路径
+            , method: 'get'
+              });
+      }
+  };
+//这个是用于创建点击事件的实例
+$('.demoTable .layui-btn').on('click', function ()
+{
+    var type = $(this).data('type');
+    active[type] ? active[type].call(this) : '';
+});
+
+ 
+});
+</script>
+</body>
+</html>     
