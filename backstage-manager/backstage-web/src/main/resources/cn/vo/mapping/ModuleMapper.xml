@@ -88,7 +88,7 @@
     select 
     <include refid="Base_Column_List" />
     from module
-    where id = #{id,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER} and disabled=0
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from module
@@ -104,7 +104,7 @@
     insert into module (id, name, disabled, 
       code, parent_id, description
       )
-    values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{disabled,jdbcType=INTEGER}, 
+    values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, 0, 
       #{code,jdbcType=VARCHAR}, #{parentId,jdbcType=INTEGER}, #{description,jdbcType=VARCHAR}
       )
   </insert>
@@ -117,9 +117,9 @@
       <if test="name != null" >
         name,
       </if>
-      <if test="disabled != null" >
+      
         disabled,
-      </if>
+     
       <if test="code != null" >
         code,
       </if>
@@ -137,9 +137,7 @@
       <if test="name != null" >
         #{name,jdbcType=VARCHAR},
       </if>
-      <if test="disabled != null" >
-        #{disabled,jdbcType=INTEGER},
-      </if>
+      0,
       <if test="code != null" >
         #{code,jdbcType=VARCHAR},
       </if>
@@ -187,7 +185,7 @@
     update module
     set id = #{record.id,jdbcType=INTEGER},
       name = #{record.name,jdbcType=VARCHAR},
-      disabled = #{record.disabled,jdbcType=INTEGER},
+      disabled = 0,
       code = #{record.code,jdbcType=VARCHAR},
       parent_id = #{record.parentId,jdbcType=INTEGER},
       description = #{record.description,jdbcType=VARCHAR}
@@ -219,7 +217,7 @@
   <update id="updateByPrimaryKey" parameterType="cn.vo.pojo.Module" >
     update module
     set name = #{name,jdbcType=VARCHAR},
-      disabled = #{disabled,jdbcType=INTEGER},
+      disabled = 0,
       code = #{code,jdbcType=VARCHAR},
       parent_id = #{parentId,jdbcType=INTEGER},
       description = #{description,jdbcType=VARCHAR}
@@ -231,5 +229,26 @@
 	INNER JOIN role r on r.id=rm.role_id INNER JOIN user_role ur on ur.role_id=r.id
 	where ur.user_id=#{userId}
 	</select>
+  <select id="getListQuery" parameterType="map" resultMap="BaseResultMap">
+  	 select  <include refid="Base_Column_List" /> from module where
+  <if test="name != null and name.length()>0" >
+        name = #{name} and 
+      </if>
+	disabled=0 limit  #{index} , #{pageSize}
+  </select>
+  <select id="getAll" parameterType="map" resultMap="BaseResultMap">
+  	 select  <include refid="Base_Column_List" /> from module where
+ 	 <if test="name != null and name.length()>0" >
+        name = #{name} and 
+    </if>
+ 	 <if test="code != null and code.length()>0" >
+        code = #{code} and 
+    </if>
+ 	 <if test="description != null and description.length()>0" >
+        description = #{description} and 
+    </if>
+	disabled=0 
+  </select>
+  
   
 </mapper>

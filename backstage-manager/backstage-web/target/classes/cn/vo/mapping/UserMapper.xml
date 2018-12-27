@@ -273,7 +273,7 @@
   
   <select id="getListQuery" resultMap="BaseResultMap" parameterType="map">
   select  <include refid="Base_Column_List" /> from user where
-  <if test="username != null" >
+  <if test="username != null and username.length()>0" >
         username = #{username} and 
       </if>
 	disabled=0 limit  #{index} , #{pageSize}

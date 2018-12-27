@@ -14,18 +14,18 @@
 <body>
  <div class="layui-btn-group" style="margin-bottom: 15px;">
                       
-                            <i class="layui-icon"> <a class="layui-btn layui-btn-sm layui-btn-primary" lay-href="/add" th:href="@{/users/add}"> 新增</a></i>
+                            <i class="layui-icon"> <a class="layui-btn layui-btn-sm layui-btn-primary" lay-href="/add" th:href="@{/module/add}"> 新增</a></i>
                        
                     </div>
-  <div class="demoTable">
-            用户名：
+  <div class="moduleQuery">
+            权限名：
             <div class="layui-inline">
-                <input class="layui-input" id="username" autocomplete="off"/>
+                <input class="layui-input" id="name" autocomplete="off"/>
             </div>
             <button class="layui-btn" data-type="reload">搜索</button>
         </div>
-<table id="demo" lay-filter="test"></table>
- <script type="text/html" id="barDemo">
+<table id="moduleTable" lay-filter="module"></table>
+ <script type="text/html" id="modulecz">
   <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail"  >查看</a>
   <a class="layui-btn layui-btn-xs" lay-event="edit" >编辑</a>
   <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del" >删除</a>
@@ -37,30 +37,28 @@ layui.use('table', function(){
   
   //第一个实例
   table.render({
-    elem: '#demo'
+    elem: '#moduleTable'
     ,height: 600
-    ,url: '/users/listJson' //数据接口
+    ,url: '/module/listJson' //数据接口
     ,page: true //开启分页
     ,cols: [[ //表头
       {field: 'id', title: 'ID', width:80, sort: true, fixed: 'left'}
-      ,{field: 'username', title: '用户名', width:80}
-      ,{field: 'loginName', title: '登录名', width:80}
-      ,{field: 'phone', title: '电话', width:80}
-      ,{field: 'email', title: '邮箱', width:120}
-      ,{fixed: 'right',title: '操作', width: 165, align:'center', toolbar: '#barDemo'}
+      ,{field: 'name', title: '权限名', width:120}
+      ,{field: 'code', title: 'code码', width:120}
+      ,{fixed: 'right',title: '操作', width: 165, align:'center', toolbar: '#modulecz'}
     ]]
   });
-  table.on('tool(test)', function(obj){ //注：tool 是工具条事件名，test 是 table 原始容器的属性 lay-filter="对应的值"
+  table.on('tool(module)', function(obj){ //注：tool 是工具条事件名，test 是 table 原始容器的属性 lay-filter="对应的值"
 	    var data = obj.data //获得当前行数据
 	    ,layEvent = obj.event; //获得 lay-event 对应的值
 	    if(layEvent === 'detail'){
 	      console.log(data.id);
-	      window.location.href="/users/deial?id="+data.id;
+	      window.location.href="/module/deial?id="+data.id;
 	    } else if(layEvent === 'del'){
 	      layer.confirm('真的删除行么', function(index){
 	    	  $.ajax({
                       type: "get",
-                    url: "/users/del",
+                    url: "/module/del",
                      data: "id="+data.id,
                      dataType: "text",
                       success: function (data) {
@@ -76,29 +74,29 @@ layui.use('table', function(){
 	      });
 	    } else if(layEvent === 'edit'){
 	 /*      layer.msg('编辑操作'); */
-	    	 window.location.href="/users/edit?id="+data.id;
+	    	 window.location.href="/module/edit?id="+data.id;
 	    }
 	  });
   var $ = layui.$, active =
   {
       reload: function () {
-          var username = $('#username').val();//获取输入框的值
+          var name = $('#name').val();//获取输入框的值
           //执行重载
-          table.reload('demo',
+          table.reload('moduleTable',
               {
                   page:
                       {
                           curr: 1 //重新从第 1 页开始
                       }
-            , where: { username: username}//这里传参  向后台
-            , url: '/users/listJson'//后台做模糊搜索接口路径
+            , where: { name: name}//这里传参  向后台
+            , url: '/module/listJson'//后台做模糊搜索接口路径
             , method: 'get'
               });
       }
   };
   
 //这个是用于创建点击事件的实例
-$('.demoTable .layui-btn').on('click', function ()
+$('.moduleQuery .layui-btn').on('click', function ()
 {
     var type = $(this).data('type');
     active[type] ? active[type].call(this) : '';

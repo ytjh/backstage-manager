@@ -14,21 +14,22 @@
 <body>
  <div class="layui-btn-group" style="margin-bottom: 15px;">
                       
-                            <i class="layui-icon"> <a class="layui-btn layui-btn-sm layui-btn-primary" lay-href="/add" th:href="@{/users/add}"> 新增</a></i>
+                            <i class="layui-icon"> <a class="layui-btn layui-btn-sm layui-btn-primary" lay-href="/add" th:href="@{/role/add}"> 新增</a></i>
                        
                     </div>
   <div class="demoTable">
-            用户名：
+            角色名称：
             <div class="layui-inline">
-                <input class="layui-input" id="username" autocomplete="off"/>
+                <input class="layui-input" id="roleName" autocomplete="off"/>
             </div>
             <button class="layui-btn" data-type="reload">搜索</button>
         </div>
-<table id="demo" lay-filter="test"></table>
- <script type="text/html" id="barDemo">
+<table id="roleList" lay-filter="role"></table>
+ <script type="text/html" id="operation">
   <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail"  >查看</a>
   <a class="layui-btn layui-btn-xs" lay-event="edit" >编辑</a>
   <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del" >删除</a>
+  <a class="layui-btn  layui-btn-xs" lay-event="distribution" >分配权限</a>
 </script>
  <script th:src="@{/layuiadmin/layui/layui.js}" ></script>
 <script>
@@ -37,30 +38,28 @@ layui.use('table', function(){
   
   //第一个实例
   table.render({
-    elem: '#demo'
+    elem: '#roleList'
     ,height: 600
-    ,url: '/users/listJson' //数据接口
+    ,url: '/role/listJson' //数据接口
     ,page: true //开启分页
     ,cols: [[ //表头
       {field: 'id', title: 'ID', width:80, sort: true, fixed: 'left'}
-      ,{field: 'username', title: '用户名', width:80}
-      ,{field: 'loginName', title: '登录名', width:80}
-      ,{field: 'phone', title: '电话', width:80}
-      ,{field: 'email', title: '邮箱', width:120}
-      ,{fixed: 'right',title: '操作', width: 165, align:'center', toolbar: '#barDemo'}
+      ,{field: 'name', title: '角色名称', width:100}
+      ,{field: 'code', title: 'code码', width:100}
+      ,{fixed: 'right',title: '操作', width: 230, align:'center', toolbar: '#operation'}
     ]]
   });
-  table.on('tool(test)', function(obj){ //注：tool 是工具条事件名，test 是 table 原始容器的属性 lay-filter="对应的值"
+  table.on('tool(role)', function(obj){ //注：tool 是工具条事件名，test 是 table 原始容器的属性 lay-filter="对应的值"
 	    var data = obj.data //获得当前行数据
 	    ,layEvent = obj.event; //获得 lay-event 对应的值
 	    if(layEvent === 'detail'){
 	      console.log(data.id);
-	      window.location.href="/users/deial?id="+data.id;
+	      window.location.href="/role/deial?id="+data.id;
 	    } else if(layEvent === 'del'){
 	      layer.confirm('真的删除行么', function(index){
 	    	  $.ajax({
                       type: "get",
-                    url: "/users/del",
+                    url: "/role/del",
                      data: "id="+data.id,
                      dataType: "text",
                       success: function (data) {
@@ -76,22 +75,24 @@ layui.use('table', function(){
 	      });
 	    } else if(layEvent === 'edit'){
 	 /*      layer.msg('编辑操作'); */
-	    	 window.location.href="/users/edit?id="+data.id;
+	    	 window.location.href="/role/edit?id="+data.id;
+	    }else if(layEvent == 'distribution'){
+	    	window.location.href="/distribution/list?id="+data.id;
 	    }
 	  });
   var $ = layui.$, active =
   {
       reload: function () {
-          var username = $('#username').val();//获取输入框的值
+          var roleName = $('#roleName').val();//获取输入框的值
           //执行重载
-          table.reload('demo',
+          table.reload('roleList',
               {
                   page:
                       {
                           curr: 1 //重新从第 1 页开始
                       }
-            , where: { username: username}//这里传参  向后台
-            , url: '/users/listJson'//后台做模糊搜索接口路径
+            , where: { name: roleName}//这里传参  向后台
+            , url: '/role/listJson'//后台做模糊搜索接口路径
             , method: 'get'
               });
       }

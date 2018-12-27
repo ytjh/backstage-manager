@@ -1,13 +1,9 @@
 package cn.vo.controller;
 
-
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -18,99 +14,86 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONObject;
-
 import cn.vo.backstage.Utils.ListResult;
 import cn.vo.backstage.Utils.PageUtils;
-import cn.vo.pojo.User;
-import cn.vo.service.IUserService;
+import cn.vo.pojo.Role;
+import cn.vo.service.IRoleService;
 
 @Controller
-@RequestMapping("users")
-public class UserController {
+@RequestMapping("role")
+public class RoleController {
 	
 	@Autowired
-	private IUserService iUserService;
+	private IRoleService roleService;
 	
 	
-	
-	@GetMapping("/info")
-	public String info(Model model,HttpServletRequest request){
-		HttpSession session=request.getSession();
-		User user=(User) session.getAttribute("USER");
-		model.addAttribute("user", user);
-		return "views/component/anim/info";
-	}
-	
-	@GetMapping("/list")
+	@GetMapping("list")
 	public String list(){
-		return "views/user/userList";
+		return "views/role/roleList";
 	}
 	@GetMapping("/listJson")
 	@ResponseBody
-	public ListResult<User> listJson(String username,Integer page, Integer limit){
+	public ListResult<Role> listJson(String name,Integer page, Integer limit){
 		Map map=new HashMap<>();
-		map.put("username", username);
+		map.put("name", name);
 		map.put("index", PageUtils.getPageIndex(page, limit));
 		map.put("pageSize", PageUtils.getPageSize(page, limit));
-		List<User> list=iUserService.getListQuery(map);
-		ListResult<User> result=new ListResult<>();
+		List<Role> list=roleService.getListQuery(map);
+		ListResult<Role> result=new ListResult<>();
 		result.setCode("0");
-		result.setCount(Long.valueOf(iUserService.getCount()));
+		result.setCount(Long.valueOf(roleService.count()));
 		result.setMsg("");
 		result.setData(list);
 		return result;
 	}
-
 	@GetMapping("/deial")
 	public String deial(Model model,Integer id){
-		User user=iUserService.getById(id);
-		model.addAttribute("deial", user);
-		return "views/user/deial";
+		Role role=roleService.getById(id);
+		model.addAttribute("deial", role);
+		return "views/role/roleDeial";
 	}
 	@GetMapping("/add")
 	public String add(){
-		return "views/user/userAdd";
+		return "views/role/roleAdd";
 	}
 	
 	@PostMapping("/insert")
-	public String insert(@ModelAttribute User user){
+	public String insert(@ModelAttribute Role role){
 		try {
-			user.setCreateTime(new Date());
-			iUserService.insertUser(user);
+			roleService.insert(role);
 		} catch (Exception e) {
 			e.printStackTrace();
-			return "redirect:/users/list";
+			return "redirect:/role/list";
 		}
-		return "redirect:/users/list";
+		return "redirect:/role/list";
 	}
 	@GetMapping("/edit")
 	public String edit(Model model,Integer id){
-		User user=iUserService.getById(id);
-		model.addAttribute("deial", user);
-		return "views/user/userEdit";
+		Role role=roleService.getById(id);
+		model.addAttribute("deial", role);
+		return "views/role/roleEdit";
 	}
 	
 	@PostMapping("/update")
-	public String update(@ModelAttribute User user){
+	public String update(@ModelAttribute Role role){
 		try {
-			iUserService.updateId(user);
+			roleService.update(role);
 		} catch (Exception e) {
 			e.printStackTrace();
-			return "redirect:/users/list";
+			return "redirect:/role/list";
 		}
-		return "redirect:/users/list";
+		return "redirect:/role/list";
 	}
 	@ResponseBody
 	@GetMapping("/del")
 	public String del(Integer id){
 		try {
-			iUserService.delId(id);
+			roleService.delId(id);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return "error";
 		}
 		return "删除成功了";
 	}
+
 }

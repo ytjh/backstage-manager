@@ -3,6 +3,7 @@ package cn.vo.dao;
 import cn.vo.pojo.Module;
 import cn.vo.pojo.ModuleExample;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -33,4 +34,6 @@ public interface ModuleMapper {
     int updateByPrimaryKey(Module record);
     
     List<Module> getByUserId(Integer userId);
+    List<Module> getListQuery(Map map);
+    List<Module> getAll(Map map);
 }

@@ -16,6 +16,9 @@
         <dependent-module archiveName="backstage-pojo-0.0.1-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/backstage-pojo/backstage-pojo">
             <dependency-type>uses</dependency-type>
         </dependent-module>
+        <dependent-module archiveName="product-common-0.0.1-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/product-common/product-common">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
         <property name="context-root" value="backstage-web"/>
         <property name="java-output-path" value="/backstage-web/target/classes"/>
     </wb-module>
