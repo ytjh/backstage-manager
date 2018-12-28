@@ -11,11 +11,11 @@
   </style>
 </head>
 <body>
-<div class="layui-card-header">表单组合</div>
+<div class="layui-card-header">权限分配</div>
       <div class="layui-card-body" >
-      
+      <input type="hidden" id="roleId" th:value="${roleId}"  class="layui-input"/>
    		<div th:each="list:${module}"  style="width: 20%">
-   		 	 <input type="checkbox" name="moduleid" th:value="${list.id}" lay-skin="primary" /><span th:text="${list.name}"></span>
+   		 	 <input type="checkbox" name="moduleid" th:value="${list.id}" lay-skin="primary"  th:checked="${#strings.contains(moduleIds,list.id)}" /><span th:text="${list.name}"></span>
            </div>
            <div class="layui-form-item layui-layout-admin">
             <div class="layui-input-block">
@@ -33,18 +33,19 @@
 		    $('input[name="moduleid"]:checked').each(function(){ 
 		    	moduleId.push($(this).val()); 
 		    }); 
-		    alert(moduleId);
+		    var roleId=$("#roleId").val();
 		    $.ajax({
 			      type:"POST",
 			      traditional: true,
 			       url:"/distribution/save",
-			      data:{"moduleIds":moduleId},
+			      data:{"moduleIds":moduleId,"roleId":roleId},
 			      dataType:"text",
 			      success:function(data){
-			       if(data=="登录成功"){
-			    	   alert("登录成功！");
+			       if(data=="ok"){
+			    	   alert("权限分配成功，请退出重新登录！");
+			    	   window.location.href="/role/list";
 			       }else{
-			    	   alert(data);
+			    	   alert("权限分配失败，请稍后重试！");
 			       }
 			      }
 			    });

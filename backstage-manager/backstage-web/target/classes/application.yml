@@ -9,7 +9,7 @@ spring:
   thymeleaf:
     prefix: classpath:/templates/
     cache: false  # 此处为不缓存页面
- 
 mybatis:
   mapper-locations: classpath:cn/vo/mapping/*.xml
   type-aliases-package: cn.vo.pojo
+  

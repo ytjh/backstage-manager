@@ -178,4 +178,10 @@
       m_id = #{mId,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
+  
+   <delete id="delRoleId" parameterType="java.lang.Integer" >
+    delete from role_module
+    where role_id = #{roleId}
+  </delete>
+  
 </mapper>

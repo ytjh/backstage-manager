@@ -18,18 +18,7 @@
           <div class="layui-card-body" pad15="">
             
             <div class="layui-form" lay-filter="" th:each="deail:${user}">
-              <div class="layui-form-item">
-                <label class="layui-form-label">我的角色</label>
-                <div class="layui-input-inline">
-                  <select name="role" lay-verify="">
-                    <option value="1" selected="selected">超级管理员</option>
-                    <option value="2" disabled="disabled">普通管理员</option>
-                    <option value="3" disabled="disabled">审核员</option>
-                    <option value="4" disabled="disabled">编辑人员</option>
-                  </select> 
-                </div>
-                <div class="layui-form-mid layui-word-aux">当前角色不可更改为其它角色</div>
-              </div>
+             
               <div class="layui-form-item">
                 <label class="layui-form-label">用户名</label>
                 <div class="layui-input-inline">
@@ -74,12 +63,7 @@
                   <textarea name="remarks" placeholder="请输入内容" class="layui-textarea"></textarea>
                 </div>
               </div>
-              <div class="layui-form-item">
-                <div class="layui-input-block">
-                  <button class="layui-btn" lay-submit="" lay-filter="setmyinfo">确认修改</button>
-                  <button type="reset" class="layui-btn layui-btn-primary">重新填写</button>
-                </div>
-              </div>
+              
             </div>
             
           </div>

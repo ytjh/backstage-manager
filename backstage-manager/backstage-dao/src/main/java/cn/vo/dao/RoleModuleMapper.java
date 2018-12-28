@@ -14,6 +14,7 @@ public interface RoleModuleMapper {
     int deleteByExample(RoleModuleExample example);
 
     int deleteByPrimaryKey(Integer id);
+   
 
     int insert(RoleModule record);
 
@@ -30,4 +31,6 @@ public interface RoleModuleMapper {
     int updateByPrimaryKeySelective(RoleModule record);
 
     int updateByPrimaryKey(RoleModule record);
+    
+    int delRoleId(Integer roleId);
 }

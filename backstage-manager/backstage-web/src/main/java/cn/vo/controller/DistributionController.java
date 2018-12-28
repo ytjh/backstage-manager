@@ -12,6 +12,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import cn.vo.pojo.Module;
 import cn.vo.pojo.RoleModule;
@@ -45,19 +46,31 @@ public class DistributionController {
 			for(int i=0;i<roleModules.size();i++){
 				buffer.append(roleModules.get(i).getmId());
 			}
-			
 		}
-		
+		model.addAttribute("moduleIds", buffer);
+		model.addAttribute("roleId", id);
 		
 		return "views/module/distribution";
 	}
 
 	@PostMapping("save")
-	public String save(String[] moduleIds){
-		for(int i=0;i<moduleIds.length;i++){
-			System.out.println(moduleIds[i]);
+	@ResponseBody
+	public String save(String[] moduleIds,Integer roleId){
+		try {
+			iRoleModuleService.delRoleId(roleId);
+			for(int i=0;i<moduleIds.length;i++){
+				RoleModule roleModule=new RoleModule();
+				roleModule.setmId(Integer.valueOf(moduleIds[i]));
+				roleModule.setRoleId(roleId);
+				iRoleModuleService.insert(roleModule);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			return "error";
 		}
 		
-		return "";
+		
+		return "ok";
 	}
+	
 }

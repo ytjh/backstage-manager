@@ -113,4 +113,31 @@ public class UserController {
 		}
 		return "删除成功了";
 	}
+	
+	@GetMapping("editPaswd")
+	public String editPaswd(){
+		return "views/component/anim/password";
+	}
+	
+	@PostMapping("updatePas")
+	@ResponseBody
+	public String updatePas(String password,String oldPassword,HttpServletRequest request){
+		try {
+			User user=(User) request.getSession().getAttribute("USER");
+			if(user==null){
+				return "redirect";
+			}
+			if(!user.getPassword().equals(oldPassword)){
+				return "old";
+			}
+			user.setPassword(password);
+			iUserService.updateId(user);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return "error";
+		}
+		return "ok";
+	}
+	
+	
 }

@@ -60,4 +60,10 @@ public class RoleModuleServiceImpl implements IRoleModuleService{
 		roleModuleMapper.selectByPrimaryKey(id);
 	}
 
+	@Override
+	public void delRoleId(Integer roleId) {
+		roleModuleMapper.delRoleId(roleId);
+		
+	}
+
 }

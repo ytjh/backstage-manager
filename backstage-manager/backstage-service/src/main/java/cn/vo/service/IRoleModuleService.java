@@ -17,6 +17,8 @@ public interface IRoleModuleService {
 	
 	void delId(Integer id);
 	
+	void delRoleId(Integer roleId);
+	
 	void getById(Integer id);
 	
 	

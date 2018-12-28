@@ -53,16 +53,16 @@
             <a href="javascript:;">
               <cite><span th:text="${session.userName}"></span></cite>
             </a>
-            <dl class="layui-nav-child">
+            <dl class="layui-nav-child">	
               <a lay-href="/users/info">基本资料</a>
-              <dd><a lay-href="views/component/anim/password.html">修改密码</a></dd>
+              <dd><a lay-href="/users/editPaswd">修改密码</a></dd>
             
               <dd layadmin-event="logout" style="text-align: center;"><a th:href="@{/logout}">退出</a></dd>
             </dl>
           </li>
           
           <li class="layui-nav-item layui-hide-xs" lay-unselect="">
-            <a ><i class="layui-icon layui-icon-more-vertical"></i></a>
+            <a ><i class=""></i></a>
           </li>
           
         </ul>
@@ -309,28 +309,23 @@
                 </dd>
               </dl>
             </li>
-            <shiro:hasPermission shiro:hasPermission="admin">
-            <li data-name="user" class="layui-nav-item">
+            <li data-name="user" class="layui-nav-item" shiro:hasPermission="admin">
               <a href="javascript:;" lay-tips="用户" lay-direction="2">
                 <i class="layui-icon layui-icon-user"></i>
                 <cite>系统管理</cite>
               </a>
               <dl class="layui-nav-child">
-                <dd>
-                  <a lay-href="users/list" >用户管理</a>
-                </dd>
-                <dd>
-                 <a lay-href="role/list" >角色管理</a>
-                </dd>
-                 <dd>
+                 <dd data-name="module">
                   <a lay-href="module/list">权限管理</a>
                 </dd>
-                 <dd>
-                  <a href="javascript:;" onclick="layer.tips('即将开放', this);">分配权限</a>
+                <dd data-name="role">
+                 <a lay-href="role/list" >角色管理</a>
+                </dd>
+                <dd data-name="users">
+                  <a lay-href="users/list" >用户管理</a>
                 </dd>
               </dl>
             </li>
-            </shiro:hasPermission>
             <li data-name="set" class="layui-nav-item">
               <a href="javascript:;" lay-tips="设置" lay-direction="2">
                 <i class="layui-icon layui-icon-set"></i>
@@ -342,13 +337,15 @@
                   <dl class="layui-nav-child">
                     <dd><a lay-href="views/component/anim/website.html">网站设置</a></dd>
                     <dd><a lay-href="views/component/anim/email.html">邮件服务</a></dd>
+                    <dd><a lay-href="views/component/anim/email.html">首页展示</a></dd>
+                    <dd><a lay-href="views/component/anim/email.html">动态新闻</a></dd>
                   </dl>
                 </dd>
                 <dd>
                   <a href="javascript:;">我的设置</a>
                   <dl class="layui-nav-child">
-                    <dd><a lay-href="views/component/anim/info.html">基本资料</a></dd>
-                    <dd><a lay-href="views/component/anim/password.html">修改密码</a></dd>
+                    <dd><a lay-href="/users/info">基本资料</a></dd>
+                    <dd><a lay-href="/users/editPaswd">修改密码</a></dd>
                   </dl>
                 </dd>
               </dl>
